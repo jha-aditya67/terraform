@@ -52,9 +52,14 @@ resource aws_key_pair deployer {
 # ec2 instance
 
 resource aws_instance my_instance {
+    # count = 2 # meta argumenet
+    for_each = tomap ({
+        my-instance-1 = "t3.micro"
+        my-instance-2 = "t3.micro"
+    })
     key_name = aws_key_pair.deployer.key_name
     security_groups = [aws_security_group.my_security_group.name]
-    instance_type = var.ec2_instance_type
+    instance_type = each.value
     ami = var.ec2_ami_id
     user_data = file("install-nginx.sh")
 
@@ -63,6 +68,6 @@ resource aws_instance my_instance {
         volume_type = "gp3"
     } 
     tags = {
-        Name = "first-tf-instance"
+        Name = each.key
     }
 }
