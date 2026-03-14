@@ -66,7 +66,7 @@ resource aws_instance my_instance {
     user_data = file("install-nginx.sh")
 
     root_block_device {
-        volume_size = var.ec2_root_storage_size
+        volume_size = var.env == "prd" ? 20 : var.ec2_default_root_storage_size
         volume_type = "gp3"
     } 
     tags = {
