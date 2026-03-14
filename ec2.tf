@@ -57,6 +57,8 @@ resource aws_instance my_instance {
         my-instance-1 = "t3.micro"
         my-instance-2 = "t3.micro"
     })
+    depends_on = [aws_security_group.my_security_group, aws_key_pair.deployer]
+
     key_name = aws_key_pair.deployer.key_name
     security_groups = [aws_security_group.my_security_group.name]
     instance_type = each.value
