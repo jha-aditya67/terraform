@@ -1,15 +1,18 @@
 # key pair (login)
 
 resource aws_key_pair deployer {
-    key_name = "terra-key-ec2"
+    key_name = "${var.env}-terra-key-ec2"
     public_key = file("terra-key-ec2.pub")
+    tags = {
+        Environment = var.env
+    }
 }
 # VPC & security group
     resource aws_default_vpc default {
 
     }
     resource aws_security_group my_security_group {
-        name = "automate-sg"
+        name = "${var.env}-automate-sg"
         description = "This will add a TF generated security group"
         vpc_id = aws_default_vpc.default.id #interpolation
         # Inbound rules
@@ -44,7 +47,8 @@ resource aws_key_pair deployer {
         }
 
         tags = {
-            Name = "allow_tls"
+            Name = "${var.env}-automate-sg"
+            Environment = var.env
         }
 
     }
@@ -71,6 +75,7 @@ resource aws_instance my_instance {
     } 
     tags = {
         Name = each.key
+        Environment = var.env
     }
 }
 
