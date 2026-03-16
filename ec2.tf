@@ -74,7 +74,3 @@ resource aws_instance my_instance {
     }
 }
 
-resource "aws_instance" "my_new_instance" {
-    ami_id = "unknown"
-    instance_type = "unknown"
-}
